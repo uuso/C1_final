@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -51,13 +51,23 @@
             $('.seconds').text(String('0'+sec).slice(-2));
         }
         $('.plus').click(function(){
-            if (cntdnEnabled) return;
+            if (cntdnEnabled) {
+                clearInterval(cntdn);
+                cntdnEnabled = false;
+                $('.countdown-time').color("#fff");
+                return;
+            }
             fulltime = fulltime + parseInt(document.querySelector('input').value);
             fulltime = fulltime > 0 ? fulltime % 3600 : 0;
             setTimes();
         })
         $('.minus').click(function(){
-            if (cntdnEnabled) return;
+            if (cntdnEnabled) {
+                clearInterval(cntdn);
+                cntdnEnabled = false;
+                $('.countdown-time').color("#fff");
+                return;
+            }
             fulltime = fulltime - parseInt(document.querySelector('input').value);
             fulltime = fulltime > 0 ? fulltime % 3600 : 0;
             setTimes();
