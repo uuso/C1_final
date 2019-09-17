@@ -74,6 +74,7 @@
         })
         
         $('.start').click( () => {
+            if (cntdnEnabled) return;
             cntdnEnabled = true;
             $('.message').hide(); // на случай повторного запуска
             $('.countdown-time').color("#f55")
