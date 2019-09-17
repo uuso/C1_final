@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="myjq.js"></script>
+</head>
+<body>
+    <h1 class="countdown-title">Countdown Clock</h1>
+    <section class="countdown">
+        <div class="countdown-number">
+            <p class="minutes countdown-time"></p>
+            <p class="countdown-text">Minutes</p>
+        </div>
+        <div class="countdown-number">
+            <p class="seconds countdown-time"></p>
+            <p class="countdown-text">Seconds</p>
+        </div>
+    </section>
+    <div>
+        <input type="number" value="1">
+        <button class="plus">plus</button>
+        <button class="minus">minus</button>
+        <button class="start">start</button>
+    </div>
+    
+    <div class="message">Отсчёт закончен.</div>
+
+    <script>
+        jQuery.prototype.color = function (color) {
+            this.each(element => element.style.color = String(color));
+            return this;
+        }
+
+
+        // INITIALS
+        $('.countdown-time').text("00");
+        $('.message').hide();
+        let fulltime = 0;
+        let cntdnEnabled = false;
+        let cntdn = null;
+        
+        function setTimes() {
+            const min = (fulltime / 60) | 0;
+            const sec = fulltime % 60;
+            console.log(min, sec);
+            $('.minutes').text(String('0'+min).slice(-2));
+            $('.seconds').text(String('0'+sec).slice(-2));
+        }
+        $('.plus').click(function(){
+            if (cntdnEnabled) return;
+            fulltime = fulltime + parseInt(document.querySelector('input').value);
+            fulltime = fulltime > 0 ? fulltime % 3600 : 0;
+            setTimes();
+        })
+        $('.minus').click(function(){
+            if (cntdnEnabled) return;
+            fulltime = fulltime - parseInt(document.querySelector('input').value);
+            fulltime = fulltime > 0 ? fulltime % 3600 : 0;
+            setTimes();
+        })
+        
+        $('.start').click( () => {
+            cntdnEnabled = true;
+            $('.message').hide(); // на случай повторного запуска
+            $('.countdown-time').color("#f55")
+            // отсчёт и остановка таймера
+            cntdn = setInterval( () => { 
+                fulltime-=1; 
+                setTimes(); 
+                if (cntdnEnabled && fulltime <= 0) {
+                    clearInterval(cntdn);
+                    $('.message').show();
+                    // готовим к повторному запуску
+                    cntdnEnabled = false;
+                    fulltime = 0;
+                    $('.countdown-time').color("#fff")
+                }
+            }, 1000);
+        });
+
+    </script>
+</body>
+</html>
+
+
